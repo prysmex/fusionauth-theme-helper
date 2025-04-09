@@ -84,10 +84,12 @@
   <link rel="stylesheet" href="/css/font-awesome-4.7.0.min.css"/>
 
 
-  [#-- End Favicon Madness --]
+  [#-- Prysmex CSS --]
   <link rel="stylesheet" href="https://app.prysmex.com/assets/vendor-a660e5ea14d94664d2eceb632a911f40.css" />
+  <link rel="stylesheet" href="https://app.prysmex.com/assets/chunk.92.acb64c93a6a325611b35.css" />
+  <link rel="stylesheet" href="https://app.prysmex.com/assets/@apps/core-38fbf2ab8fa06a820bde0aba5f6ac9d4.css" />
+  [#-- End Prysmex CSS --]
 
-  [#-- End Favicon Madness --]
   [#if theme.type == "simple"]
     <link rel="stylesheet" href="/css/simple-theme.css?version=${version}"/>
   [/#if]
@@ -141,7 +143,7 @@
 
 [#macro body]
 <body class="app-sidebar-closed">
-<main>
+<main class="euiPageBody container-md">
   [#nested/]
 </main>
 </body>
@@ -149,21 +151,7 @@
 
 [#macro header]
   [#if theme.type != 'simple' || request.requestURI == "/" || request.requestURI?starts_with("/account")]
-    <header class="app-header">
-      <div class="right-menu" [#if request.requestURI == "/"]style="display: block !important;" [/#if]>
-        <nav>
-          <ul>
-            [#if request.requestURI == "/"]
-              <li><a href="${request.contextPath}/admin/" title="Administrative login"><i class="fa fa-lock" style="font-size: 18px;"></i></a></li>
-            [#elseif request.requestURI?starts_with("/account")]
-              <li><a href="${request.contextPath}/account/logout?client_id=${client_id!''}" title="Logout"><i class="fa fa-sign-out"></i></a></li>
-            [#else]
-              <li class="help"><a target="_blank" href="https://fusionauth.io/docs/"><i class="fa fa-question-circle-o"></i> ${theme.message("help")}</a></li>
-            [/#if]
-          </ul>
-        </nav>
-      </div>
-    </header>
+    
   [/#if]
 
   [#nested/]
@@ -202,30 +190,26 @@
   [/#if]
 [/#macro]
 
-[#macro main title="Login" rowClass="row center-xs" colClass="col-xs col-sm-8 col-md-6 col-lg-5 col-xl-4"]
-<main class="page-body container">
+[#macro main title="Login" mainClass="" rowClass="" colClass=""]
+<main>
   [@printErrorAlerts rowClass colClass/]
   [@printInfoAlerts rowClass colClass/]
-  <div class="${rowClass}">
-    <div class="${colClass}">
-      <div class="panel" data-in-progress>
-        <div class="logo-container">
-          <img id="imgThemeLogo" alt="logo"/>
-        </div>
-        [#if title?has_content]
-          <h2>${title}</h2>
-        [/#if]
-        <main>
-          [#nested/]
-        </main>
-      </div>
+  <div class="euiPanel euiPanel--hasShadow euiPanel--paddingLarge euiFlexGroup euiFlexGroup--directionColumn euiFlexGroup--gutterMedium" data-in-progress>
+    <div class="euiFlexItem">
+      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 3401.6 1010.5" xml:space="preserve" class="_logo_1h3v3e euiIcon euiIcon--medium" color="" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><style>.st0{fill:#2b2e46}</style><g id="Group_1342_6_" transform="translate(-214.688 -161.439)"><g id="Group_1_3_" transform="translate(214.688 161.439)"><path id="Path_1_3_" class="st0" d="M889.1 829.4l54.7 94.6H545.3l-55.5-94.6h399.3z"></path><path id="Path_2_3_" class="st0" d="M432.2 829.4l58.3 94.3L38 924l224.6-389.2 56.6 94.9-113 199.4c-.3.3 226 .3 226 .3z"></path><path id="Path_3_3_" class="st0" d="M291.2 484.7l56.9 98.6L545 231.5l-55.5-90.9-198.3 344.1z"></path><path id="Path_4_3_" d="M516.9 385.9l-56.6 100.6 167.4 294H743L516.9 385.9z" fill="#4a75e7"></path></g><path class="st0" d="M1486.6 587.2c73.8 0 131.5 57.7 131.5 147.7 0 89.9-57.7 149.7-131.5 149.7-45.2 0-77.5-22.4-95.1-45.8v178.3h-72.8V591.9h72.8v41.6c17.1-24.5 50.4-46.3 95.1-46.3zm-19.2 63.9c-39 0-75.9 30.2-75.9 84.7s36.9 84.7 75.9 84.7c39.5 0 76.4-31.2 76.4-85.8s-36.9-83.6-76.4-83.6zM1744 879.9h-72.8v-288h72.8v44.7c18.2-29.6 48.4-48.9 88.4-48.9v76.4h-19.2c-43.2 0-69.1 16.6-69.1 72.3v143.5zM2079.3 591.9h77.5l-178.3 424.2H1901l62.4-143.5L1848 591.9h81.6l74.3 201.2 75.4-201.2zM2306 884.6c-72.3 0-122.7-42.1-125.8-95.7h73.3c2.6 21.8 22.9 38.5 52 38.5 28.6 0 44.2-13 44.2-29.6 0-51.5-162.7-18.7-162.7-124.3 0-47.8 42.6-86.3 113.9-86.3 69.7 0 111.8 38 115.9 95.1h-69.7c-2.1-22.4-19.8-37.4-48.4-37.4-27 0-41.1 10.9-41.1 27.6 0 52.5 159.6 19.8 161.7 125.3 0 49.4-43.1 86.8-113.3 86.8zM2882.1 720.8c0-45.8-25.5-69.7-63.9-69.7-39 0-64.5 23.9-64.5 69.7v159.1h-72.8V720.8c0-45.8-25.5-69.7-64-69.7-39.5 0-65 23.9-65 69.7v159.1h-72.8v-288h72.8v34.8c18.2-23.9 48.9-39 84.7-39 44.7 0 81.6 19.2 101.4 55.1 18.7-32.8 56.7-55.1 98.8-55.1 69.1 0 118 43.7 118 123.2v169H2882V720.8zM3149.8 884.6c-83.7 0-144.5-58.2-144.5-148.7 0-91 59.3-148.7 144.5-148.7 83.2 0 141.9 56.7 141.9 142.5 0 9.4-.5 18.7-2.1 28.1H3079c3.6 42.6 32.8 66.5 69.1 66.5 31.2 0 48.4-15.6 57.7-34.8h78.5c-15.4 53-63.3 95.1-134.5 95.1zm-70.2-175.7h136.7c-1-38-31.2-61.9-68.6-61.9-34.8 0-62.4 22.3-68.1 61.9zM3444.6 790.5l-52.5 89.4h-78l94.1-144.5-95.2-143.5h82.1l58.8 88.9 53-88.9h78l-94.6 143.5 95.7 144.5h-82.1l-59.3-89.4z"></path></g></svg>
     </div>
-  </div>
-  <div class="${rowClass}">
-    <div class="${colClass}">
+    [#if title?has_content]
+      <h2 class="euiTitle euiTitle--large euiFlexItem">${title}</h2>
+    [/#if]
+    <main class="euiFlexItem ${mainClass}">
+      [#nested/]
+    </main>
+    <div class="euiFlexItem">
       [@localSelector/]
     </div>
   </div>
+ 
+      
 </main>
 [/#macro]
 
@@ -243,14 +227,23 @@
 [/#macro]
 
 [#macro localSelector]
-<label class="select">
-  <select id="locale-select" name="locale" class="select">
-    <option value="en" [#if locale == 'en']selected[/#if]>English</option>
-      [#list theme.additionalLocales() as l]
-        <option value="${l}" [#if locale == l]selected[/#if]>${l.getDisplayLanguage(locale)}</option>
-      [/#list]
-  </select>
-</label>
+<div class="euiFormRow">
+  <div class="euiFormControlLayout">
+    <div class="euiFormControlLayout__childrenWrapper">
+      <select id="locale-select" name="locale" class="euiSelect">
+        <option value="en" [#if locale == 'en']selected[/#if]>English</option>
+          [#list theme.additionalLocales() as l]
+            <option value="${l}" [#if locale == l]selected[/#if]>${l.getDisplayLanguage(locale)}</option>
+          [/#list]
+      </select>
+      <div class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right">
+        <span class="euiFormControlLayoutCustomIcon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="euiFormControlLayoutCustomIcon__icon euiIcon euiIcon--medium" color="" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><path clip-rule="evenodd" d="M1.957 4.982a.75.75 0 011.06-.025l4.81 4.591a.25.25 0 00.346 0l4.81-4.59a.75.75 0 011.035 1.085l-4.81 4.59a1.75 1.75 0 01-2.416 0l-4.81-4.59a.75.75 0 01-.025-1.06z"></path></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
 [/#macro]
 
 [#macro accountFooter rowClass colClass actionURL actionText actionDirection]
@@ -353,15 +346,6 @@
 
 [#macro footer]
   [#nested/]
-
-  [#-- Powered by FusionAuth branding. This backlink helps FusionAuth web ranking so more
-       people can find us! However, we always want to give the developer choice, remove this if you like. --]
-  <div id="fa-footer" style="position: fixed; bottom: 5px; right: 0; padding-bottom: 5px; padding-right: 10px; align-items: center">
-    <span style="padding-right: 5px;">Powered by </span>
-    <a href="https://fusionauth.io" title="The best developer IAM in the universe!">
-      <img src="/images/footer-logo.svg" alt="FusionAuth" height="24" style="margin-bottom: -7px;">
-    </a>
-  </div>
 [/#macro]
 
 [#-- Below are the social login buttons and helpers --]
@@ -800,7 +784,7 @@
 
 [#-- Input field of type. --]
 [#macro input type name id autocapitalize="none" autocomplete="on" autocorrect="off" autofocus=false spellcheck="false" label="" placeholder="" leftAddon="" required=false tooltip="" disabled=false class="" dateTimeFormat="" value="" uncheckedValue=""]
-<div class="euiFormRow">
+<div class="euiFormRow euiFormRow--fullWidth ${class}">
   [#if type == "checkbox"]
     [@_input_checkbox name=name value=value uncheckedValue=uncheckedValue label=label tooltip=tooltip]
      [#nested]
@@ -818,7 +802,7 @@
     <div class="euiFormRow__labelWrapper">
       <label class="euiFormLabel euiFormRow__label" for="${id}" [#if (fieldMessages[name]![])?size > 0] class="euiFormLabel euiFormRow__label euiFormLabel-isInvalid"[/#if]>
         ${label}
-        [#if required] <span class="required">*</span>[/#if]
+        [#if required]<span class="required">*</span>[/#if]
         [#if tooltip?has_content]
           <i class="fa fa-info-circle" data-tooltip="${tooltip}"></i>
         [/#if]
@@ -852,19 +836,22 @@
 [/#macro]
 
 [#macro _input_checkbox name value uncheckedValue label tooltip]
-<label>
-  [#local actualValue = ("((" + name + ")!'')")?eval/]
-  [#local checked = actualValue?is_boolean?then(actualValue == value?boolean, actualValue == value)/]
-  [#if uncheckedValue?has_content]
-  <input type="hidden" name="__cb_${name}" value="${uncheckedValue}"/>
-  [/#if]
-  <input type="checkbox" name=${name} value="${value}" [#if checked]checked=checked[/#if]/>
-  &nbsp; ${label?has_content?then(label, theme.message(name))}
-  [#nested/]
-  [#if tooltip?has_content]
-    <i class="fa fa-info-circle" data-tooltip="${tooltip}"></i>
-  [/#if]
-</label>
+  <div class="euiCheckbox">
+    [#local actualValue = ("((" + name + ")!'')")?eval/]
+    [#local checked = actualValue?is_boolean?then(actualValue == value?boolean, actualValue == value)/]
+    [#if uncheckedValue?has_content]
+    <input type="hidden" name="__cb_${name}" value="${uncheckedValue}"/>
+    [/#if]
+    <input class="euiCheckbox__input" type="checkbox" id="${name}_${value}" name=${name} value="${value}" [#if checked]checked=checked[/#if]/>
+    <div class="euiCheckbox__square"></div>
+    <label class="euiCheckbox__label" for="${name}_${value}">
+      &nbsp; ${label?has_content?then(label, theme.message(name))}
+      [#if tooltip?has_content]
+        <i class="fa fa-info-circle" data-tooltip="${tooltip}"></i>
+      [/#if]
+      [#nested/]
+    </label>
+  </div>
 [/#macro]
 
 [#-- Select --]
@@ -981,23 +968,38 @@
   [#-- Note: This is a simple imlementation that does not support selecting more than one locale.
              You may wish to use a multi-select or some other JavaScript widget to allow for more than one selection and to improve UX --]
   [#local value=("((" + name + ")!'')")?eval/]
-  <div class="form-row">
+  <div class="euiFormRow">
     [#if label?has_content][#t/]
-    <label for="${id}"[#if (fieldMessages[name]![])?size > 0] class="error"[/#if]>${label}[#if required] <span class="required">*</span>[/#if][#t/]
-      [#if tooltip?has_content][#t/]
-        <i class="fa fa-info-circle" data-tooltip="${tooltip}"></i>[#t/]
-      [/#if][#t/]
-    </label>[#t/]
+    <div class="euiFormRow__labelWrapper">
+      <label class="euiFormLabel euiFormRow__label" for="${id}" [#if (fieldMessages[name]![])?size > 0] class="euiFormLabel euiFormRow__label euiFormLabel-isInvalid"[/#if]>
+        ${label}
+        [#if required]<span class="required">*</span>[/#if][#t/]
+        [#if tooltip?has_content][#t/]
+          <i class="fa fa-info-circle" data-tooltip="${tooltip}"></i>[#t/]
+        [/#if][#t/]
+      </label>[#t/]
+    </div>
     [/#if]
-    <label class="select">
-      <select name="${name}" id="${id}" class="${class}" [#if autofocus]autofocus="autofocus"[/#if]>
-        <option value="">${theme.optionalMessage("none-selected")}</option>
-      [#list fusionAuth.locales() as l, n]
-        [#local checked = value?is_sequence && value?seq_contains(l)/]
-        <option  value="${l}" [#if checked]selected[/#if]>${l.getDisplayName()}</option>
-      [/#list]
-     </select>
-   </label>
+    <div class="euiFormControlLayout__childrenWrapper">
+          
+      <select name="${name}" id="${id}" class="${class} euiSelect" [#if autofocus]autofocus="autofocus"[/#if]>
+          <option value="">${theme.optionalMessage("none-selected")}</option>
+          [#list fusionAuth.locales() as l, n]
+            [#local checked = value?is_sequence && value?seq_contains(l)/]
+            <option  value="${l}" [#if checked]selected[/#if]>${l.getDisplayName()}</option>
+          [/#list]
+      </select>
+        
+        
+      <div class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right">
+             
+      <span class="euiFormControlLayoutCustomIcon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="euiFormControlLayoutCustomIcon__icon euiIcon euiIcon--medium" color="" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><path clip-rule="evenodd" d="M1.957 4.982a.75.75 0 011.06-.025l4.81 4.591a.25.25 0 00.346 0l4.81-4.59a.75.75 0 011.035 1.085l-4.81 4.59a1.75 1.75 0 01-2.416 0l-4.81-4.59a.75.75 0 01-.025-1.06z"></path></svg>
+      </span>
+    </div>
+  
+  </div>
+      
    [@errors field=name/]
   </div>
 [/#macro]
@@ -1026,16 +1028,16 @@
 
 [#macro errors field]
 [#if fieldMessages[field]?has_content]
-<span class="error">[#list fieldMessages[field] as message]${message?no_esc}[#if message_has_next], [/#if][/#list]</span>
+<div class="euiFormErrorText euiFormRow__text ">[#list fieldMessages[field] as message]${message?no_esc}[#if message_has_next], [/#if][/#list]</div>
 [/#if]
 [/#macro]
 
-[#macro button text icon="arrow-right" color="blue" disabled=false name="" value=""]
-<button class="${color} button${disabled?then(' disabled', '')}"[#if disabled] disabled="disabled"[/#if][#if name !=""]name="${name}"[/#if][#if value !=""]value="${value}"[/#if]><i class="fa fa-${icon}"></i> ${text}</button>
+[#macro button text icon="arrow-right" color="blue" disabled=false name="" value="" class=""]
+<button class="${color} euiButton--fill ${class} euiButton euiButton--primary${disabled?then(' euiButton-isDisabled', '')}"[#if disabled] disabled="disabled"[/#if][#if name !=""]name="${name}"[/#if][#if value !=""]value="${value}"[/#if]><i class="fa fa-${icon}"></i> ${text}</button>
 [/#macro]
 
-[#macro link url extraParameters=""]
-<a href="${url}?tenantId=${(tenantId)!''}&client_id=${(client_id)!''}&nonce=${(nonce?url)!''}&pendingIdPLinkId=${(pendingIdPLinkId)!''}&redirect_uri=${(redirect_uri?url)!''}&response_mode=${(response_mode?url)!''}&response_type=${(response_type?url)!''}&scope=${(scope?url)!''}&state=${(state?url)!''}&timezone=${(timezone?url)!''}&metaData.device.name=${(metaData.device.name?url)!''}&metaData.device.type=${(metaData.device.type?url)!''}${(extraParameters!'')?no_esc}&code_challenge=${(code_challenge?url)!''}&code_challenge_method=${(code_challenge_method?url)!''}&user_code=${(user_code?url)!''}">
+[#macro link url extraParameters="" class=""]
+<a class="euiLink euiLink--primary ${class}" href="${url}?tenantId=${(tenantId)!''}&client_id=${(client_id)!''}&nonce=${(nonce?url)!''}&pendingIdPLinkId=${(pendingIdPLinkId)!''}&redirect_uri=${(redirect_uri?url)!''}&response_mode=${(response_mode?url)!''}&response_type=${(response_type?url)!''}&scope=${(scope?url)!''}&state=${(state?url)!''}&timezone=${(timezone?url)!''}&metaData.device.name=${(metaData.device.name?url)!''}&metaData.device.type=${(metaData.device.type?url)!''}${(extraParameters!'')?no_esc}&code_challenge=${(code_challenge?url)!''}&code_challenge_method=${(code_challenge_method?url)!''}&user_code=${(user_code?url)!''}">
 [#nested/]
 </a>
 [/#macro]

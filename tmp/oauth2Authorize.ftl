@@ -45,7 +45,6 @@
     </script>
   [/@helpers.head]
   [@helpers.body]
-
     [@helpers.header]
       [#-- Custom header code goes here --]
     [/@helpers.header]
@@ -75,34 +74,38 @@
           [@helpers.hidden name="loginId"/]
         [/#if]
 
-        <fieldset>
-          [@helpers.input type="text" name="loginId" id="loginId" autocomplete="username" autocapitalize="none" autocomplete="on" autocorrect="off" spellcheck="false" autofocus=(!loginId?has_content) placeholder=theme.message("loginId") leftAddon="user" disabled=(showPasswordField && hasDomainBasedIdentityProviders)/]
-          [#if showPasswordField]
-            [@helpers.input type="password" name="password" id="password" autocomplete="current-password" autofocus=loginId?has_content placeholder=theme.message("password") leftAddon="lock"/]
-            [@helpers.captchaBadge showCaptcha=showCaptcha captchaMethod=tenant.captchaConfiguration.captchaMethod siteKey=tenant.captchaConfiguration.siteKey/]
-          [/#if]
-        </fieldset>
+        [@helpers.input type="text" name="loginId" id="loginId" autocomplete="username" autocapitalize="none" autocomplete="on" autocorrect="off" spellcheck="false" autofocus=(!loginId?has_content) placeholder=theme.message("loginId") leftAddon="user" disabled=(showPasswordField && hasDomainBasedIdentityProviders)/]
+        [#if showPasswordField]
+          [@helpers.input type="password" name="password" id="password" autocomplete="current-password" autofocus=loginId?has_content placeholder=theme.message("password") leftAddon="lock"/]
+          [@helpers.captchaBadge showCaptcha=showCaptcha captchaMethod=tenant.captchaConfiguration.captchaMethod siteKey=tenant.captchaConfiguration.siteKey/]
+        [/#if]
 
           [@helpers.input id="rememberDevice" type="checkbox" name="rememberDevice" label=theme.message("remember-device") value="true" uncheckedValue="false"]
             <i class="fa fa-info-circle" data-tooltip="${theme.message('{tooltip}remember-device')}"></i>[#t/]
           [/@helpers.input]
 
-          <div class="form-row">
+          <div class="mt-8 euiFlexGroup euiFlexGroup--directionRow euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter">
             [#if showPasswordField]
-              [@helpers.button icon="key" text=theme.message("submit")/]
-              [@helpers.link url="${request.contextPath}/password/forgot"]${theme.message("forgot-your-password")}[/@helpers.link]
+              <div class="euiFlexItem euiFlexItem--flexGrowZero">
+                [@helpers.button icon="key" text=theme.message("submit")/]
+              </div>
+              <div class="euiFlexItem euiFlexItem--flexGrowZero">
+                [@helpers.link url="${request.contextPath}/password/forgot"]${theme.message("forgot-your-password")}[/@helpers.link]
+              </div>
             [#else]
-              [@helpers.button icon="arrow-right" text=theme.message("next")/]
+              <div class="euiFlexItem euiFlexItem--flexGrowZero">
+                [@helpers.button icon="arrow-right" text=theme.message("next")/]
+              </div>
             [/#if]
           </div>
       </form>
-      <div>
         [#if showPasswordField && hasDomainBasedIdentityProviders]
-          [@helpers.link url="" extraParameters="&showPasswordField=false"]${theme.message("sign-in-as-different-user")}[/@helpers.link]
+          <div>
+            [@helpers.link url="" extraParameters="&showPasswordField=false"]${theme.message("sign-in-as-different-user")}[/@helpers.link]
+          </div>
         [/#if]
-      </div>
       [#if application.registrationConfiguration.enabled]
-        <div class="form-row push-top">
+        <div class="mt-8">
           ${theme.message("dont-have-an-account")}
           [@helpers.link url="${request.contextPath}/oauth2/register"]${theme.message("create-an-account")}[/@helpers.link]
         </div>

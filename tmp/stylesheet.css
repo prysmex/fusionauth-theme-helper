@@ -1,0 +1,17 @@
+.container-md {
+  max-width: 768px; /* Equivalent to max-w-screen-md */
+  margin-left: auto; /* Equivalent to mx-auto */
+  margin-right: auto; /* Equivalent to mx-auto */
+  width: 100%; /* Equivalent to w-full */
+  height: 100%; /* Equivalent to h-full */
+  display: flex; /* Equivalent to flex */
+  flex-direction: column; /* Equivalent to flex-col */
+}
+
+.mainPageBody, body>.euiPageBody {
+    background: white;
+}
+
+form .form-row {
+    margin-top: 8px;
+}

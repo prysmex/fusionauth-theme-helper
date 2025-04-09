@@ -19,17 +19,16 @@
     [@helpers.main title=theme.message('forgot-password-title')]
       <form action="${request.contextPath}/password/forgot" method="POST" class="full">
         [@helpers.oauthHiddenFields/]
-
         <p>
           ${theme.message('forgot-password')}
         </p>
-        <fieldset class="push-less-top">
+        <fieldset class="mt-8">
           [@helpers.input type="text" name="email" id="email" autocapitalize="none" autofocus=true autocomplete="on" autocorrect="off" placeholder=theme.message('email') leftAddon="user" required=true/]
           [@helpers.captchaBadge showCaptcha=showCaptcha captchaMethod=tenant.captchaConfiguration.captchaMethod siteKey=tenant.captchaConfiguration.siteKey/]
         </fieldset>
-        <div class="form-row">
+        <div class="mt-8">
           [@helpers.button text=theme.message('submit')/]
-          <p class="mt-2">[@helpers.link url="/oauth2/authorize"]${theme.message('return-to-login')}[/@helpers.link]</p>
+          <p class="mt-8">[@helpers.link url="/oauth2/authorize"]${theme.message('return-to-login')}[/@helpers.link]</p>
         </div>
       </form>
     [/@helpers.main]
