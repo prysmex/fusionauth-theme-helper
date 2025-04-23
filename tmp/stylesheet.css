@@ -15,3 +15,7 @@
 form .form-row {
     margin-top: 8px;
 }
+
+.logo {
+    max-width: 100%;
+}

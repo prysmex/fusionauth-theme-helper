@@ -32,8 +32,8 @@
       <script src="${request.contextPath}/js/ui/Main.js?version=${version}"></script>
     [/@helpers.header]
 
-    [@helpers.accountMain rowClass="row center" colClass="col-xs-12 col-sm-12 col-md-10 col-lg-8" actionURL="/account/" actionText=theme.message("cancel-go-back")]
-      [@helpers.accountPanel title="" tenant=tenant user=currentUser action="edit" showEdit=true]
+    [@helpers.accountMain rowClass="" colClass="" actionURL="" actionText=theme.message("go-back")]
+      [@helpers.accountPanel title=theme.message("change-password") tenant=tenant user=currentUser action="edit" showEdit=true]
        <div class="row" style="border-bottom: 0;">
         <div class="col-xs-12 col-md-12">
           <form action="${request.contextPath}/account/edit" method="POST" class="full" id="user-form">

@@ -9,6 +9,12 @@
 [@helpers.html]
   [@helpers.head]
     [#-- Custom <head> code goes here --]
+    <script>
+      setTimeout(function() {
+        // Redirect to the login page after 5 seconds
+        window.location.href = "https://app.prysmex.com/login";
+      }, 5000);
+    </script>
   [/@helpers.head]
   [@helpers.body]
     [@helpers.header]
