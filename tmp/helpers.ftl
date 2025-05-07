@@ -85,9 +85,7 @@
 
 
   [#-- Prysmex CSS --]
-  <link rel="stylesheet" href="https://app.prysmex.com/assets/vendor-a660e5ea14d94664d2eceb632a911f40.css" />
-  <link rel="stylesheet" href="https://app.prysmex.com/assets/chunk.92.acb64c93a6a325611b35.css" />
-  <link rel="stylesheet" href="https://app.prysmex.com/assets/@apps/core-38fbf2ab8fa06a820bde0aba5f6ac9d4.css" />
+  <link rel="stylesheet" href="https://app.prysmex.com/eui_theme_light.min.css" />
   [#-- End Prysmex CSS --]
 
   [#if theme.type == "simple"]
