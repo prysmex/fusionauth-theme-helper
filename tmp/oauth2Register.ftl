@@ -33,6 +33,15 @@
             .isUserVerifyingPlatformAuthenticatorAvailable()
             .then(result => uvpaAvailableField.value = result);
         }
+
+        const emailField = document.querySelector('input[name="user.email"]');
+
+        if (emailField !== null) {
+          const identifier = new URL(window.location.href).searchParams.get('login_hint');
+          if (identifier !== null) {
+            emailField.value = identifier;
+          }
+        }
       });
     </script>
     [#-- Custom <head> code goes here --]
