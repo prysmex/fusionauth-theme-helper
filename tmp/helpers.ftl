@@ -574,11 +574,9 @@
 [#macro alternativeLogins clientId identityProviders passwordlessEnabled bootstrapWebauthnEnabled=false idpRedirectState="" federatedCSRFToken=""]
   [#if identityProviders?has_content || passwordlessEnabled || bootstrapWebauthnEnabled]
     <div id="login-button-container" class="login-button-container" data-federated-csrf="${federatedCSRFToken}">
-      <div class="hr-container">
-        <hr>
-        <div>${theme.message("or")}</div>
-      </div>
+      <div class="euiHorizontalRule euiHorizontalRule--marginLarge euiHorizontalRule--full"></div>
 
+    
       [#if passwordlessEnabled]
       <div class="form-row push-less-top">
         [@link url = "/oauth2/passwordless"]
