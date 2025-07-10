@@ -18,7 +18,16 @@
 
     [@helpers.main title=theme.message('forgot-password-title')]
       <form action="${request.contextPath}/password/forgot" method="POST" class="full">
-        [@helpers.oauthHiddenFields/]
+        [#-- We don't want 
+          to include redirect_uri in the state for the forgot password link flow, 
+          so we just save what we need, which is client_id and tenant_id and app provided state
+        --]
+        
+        [#--@helpers.oauthHiddenFields/--]
+
+        [@helpers.hidden name="tenantId"/]
+        [@helpers.hidden name="client_id"/]
+        [@helpers.hidden name="state"/]
         <p>
           ${theme.message('forgot-password')}
         </p>
