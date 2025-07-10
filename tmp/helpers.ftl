@@ -112,7 +112,16 @@
 
       if (clientId) {
         switch(clientId) {
-          case 'afd89b35-f7cc-41e4-896d-aa88a31bc263': // prysmex
+          case '49f08773-4664-45e9-869e-e377880ccb16':
+            tenantStr = 'corona';
+            break;
+          case '21e2c9ee-0a01-4368-8531-4110e3c7cc88':
+            tenantStr = 'deacero';
+            break;
+          case '507e8e75-f3bc-40fa-a19b-464508860013':
+            tenantStr = 'inmagusa';
+            break;
+          case '4a367d22-e531-439f-b157-92d80bbbf5f2':
             tenantStr = 'prysmex';
             break;
         }
