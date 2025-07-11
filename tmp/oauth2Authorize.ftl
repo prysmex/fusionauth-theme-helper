@@ -91,7 +91,15 @@
                 [@helpers.button icon="key" text=theme.message("submit")/]
               </div>
               <div class="euiFlexItem euiFlexItem--flexGrowZero">
-                [@helpers.link url="${request.contextPath}/password/forgot" extraParameters="&login_hint=${login_hint?url}"]${theme.message("forgot-your-password")}[/@helpers.link]
+                [#if login_hint??]
+                  [@helpers.link url="/password/forgot" extraParameters="&login_hint=${login_hint?url}"]
+                    ${theme.message("forgot-your-password")}
+                  [/@helpers.link]
+                [#else]
+                  [@helpers.link url="/password/forgot"]
+                    ${theme.message("forgot-your-password")}
+                  [/@helpers.link]
+                [/#if]
               </div>
             [#else]
               <div class="euiFlexItem euiFlexItem--flexGrowZero">

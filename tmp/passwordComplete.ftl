@@ -9,11 +9,20 @@
 [@helpers.html]
   [@helpers.head]
     [#-- Custom <head> code goes here --]
-    <script>
-      setTimeout(function() {
-        // Redirect to the login page after 5 seconds
-        window.location.href = "https://app.prysmex.com/login";
-      }, 3000);
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+         const state = new URL(window.location.href).searchParams.get('state') || window.sessionStorage.getItem('state');
+         if(state) {
+          let deserializedState = JSON.parse(atob(state || '{}'));
+          if(deserializedState && deserializedState.oauth && deserializedState.oauth.redirect_uri) {
+            setTimeout(function() {
+              const returnToApp = new URL(deserializedState.oauth.redirect_uri);
+              // We want to return to the base URL of the application
+              window.location.href = returnToApp.origin;
+            }, 3000);
+          } 
+         }
+      });
     </script>
   [/@helpers.head]
   [@helpers.body]

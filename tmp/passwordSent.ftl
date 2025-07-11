@@ -9,6 +9,24 @@
 [@helpers.html]
   [@helpers.head]
     [#-- Custom <head> code goes here --]
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+         const returnToLogin = document.getElementById('returnToLogin');
+         const state = new URL(window.location.href).searchParams.get('state') || window.sessionStorage.getItem('state');
+         if(state) {
+          let deserializedState = JSON.parse(atob(state || '{}'));
+          if(deserializedState && deserializedState.oauth && deserializedState.oauth.redirect_uri) {
+            const returnToLoginUrl = new URL(returnToLogin.href);
+            Object.keys(deserializedState.oauth).forEach(key => {
+              returnToLoginUrl.searchParams.set(key, deserializedState.oauth[key]);
+            });
+            returnToLogin.href = returnToLoginUrl.href;
+          } else {
+            returnToLogin.href = '/oauth2/authorize';
+          }
+         }
+      });
+    </script>
   [/@helpers.head]
   [@helpers.body]
     [@helpers.header]
@@ -19,7 +37,7 @@
       <p>
         ${theme.message('forgot-password-email-sent', email)}
       </p>
-      <p class="mt-2">[@helpers.link url="/oauth2/authorize"]${theme.message('return-to-login')}[/@helpers.link]</p>
+      <p class="mt-2">[@helpers.link url="/oauth2/authorize" id="returnToLogin"]${theme.message('return-to-login')}[/@helpers.link]</p>
     [/@helpers.main]
 
     [@helpers.footer]

@@ -112,6 +112,16 @@
 
       if (clientId) {
         switch(clientId) {
+          //staging
+          case 'afd89b35-f7cc-41e4-896d-aa88a31bc263':
+            tenantStr = 'prysmex';
+            break;
+          //qa
+          case '71f80d65-a3ba-4e99-a2f5-f3d97599a184':
+            tenantStr = 'prysmex';
+            break;
+
+          //prod
           case '49f08773-4664-45e9-869e-e377880ccb16':
             tenantStr = 'corona';
             break;
@@ -133,8 +143,21 @@
           }
         }
       }
+
+      const state = new URL(window.location.href).searchParams.get('state');
+      if(state) {
+        window.sessionStorage.setItem('state', state);
+        //We want the prysmex logo to redirect to the base URL of the application
+        let deserializedState = JSON.parse(atob(state || '{}'));
+        if(deserializedState && deserializedState.oauth && deserializedState.oauth.redirect_uri) {
+          const prysmexLogo = document.getElementById('prysmexLogo');
+          prysmexLogo.href = new URL(deserializedState.oauth.redirect_uri).origin;
+        } 
+      }
     });
   </script>
+
+  
   <script>
     "use strict";
     Prime.Document.onReady(function() {
@@ -225,7 +248,7 @@
   [@printInfoAlerts rowClass colClass/]
   <div class="euiPanel euiPanel--hasShadow euiPanel--paddingLarge euiFlexGroup euiFlexGroup--directionColumn euiFlexGroup--gutterMedium" data-in-progress>
     <div class="euiFlexItem">
-      <a href="https://app.prysmex.com"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 3401.6 1010.5" xml:space="preserve" class="logo euiIcon euiIcon--medium" color="" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><style>.st0{fill:#2b2e46}</style><g id="Group_1342_6_" transform="translate(-214.688 -161.439)"><g id="Group_1_3_" transform="translate(214.688 161.439)"><path id="Path_1_3_" class="st0" d="M889.1 829.4l54.7 94.6H545.3l-55.5-94.6h399.3z"></path><path id="Path_2_3_" class="st0" d="M432.2 829.4l58.3 94.3L38 924l224.6-389.2 56.6 94.9-113 199.4c-.3.3 226 .3 226 .3z"></path><path id="Path_3_3_" class="st0" d="M291.2 484.7l56.9 98.6L545 231.5l-55.5-90.9-198.3 344.1z"></path><path id="Path_4_3_" d="M516.9 385.9l-56.6 100.6 167.4 294H743L516.9 385.9z" fill="#4a75e7"></path></g><path class="st0" d="M1486.6 587.2c73.8 0 131.5 57.7 131.5 147.7 0 89.9-57.7 149.7-131.5 149.7-45.2 0-77.5-22.4-95.1-45.8v178.3h-72.8V591.9h72.8v41.6c17.1-24.5 50.4-46.3 95.1-46.3zm-19.2 63.9c-39 0-75.9 30.2-75.9 84.7s36.9 84.7 75.9 84.7c39.5 0 76.4-31.2 76.4-85.8s-36.9-83.6-76.4-83.6zM1744 879.9h-72.8v-288h72.8v44.7c18.2-29.6 48.4-48.9 88.4-48.9v76.4h-19.2c-43.2 0-69.1 16.6-69.1 72.3v143.5zM2079.3 591.9h77.5l-178.3 424.2H1901l62.4-143.5L1848 591.9h81.6l74.3 201.2 75.4-201.2zM2306 884.6c-72.3 0-122.7-42.1-125.8-95.7h73.3c2.6 21.8 22.9 38.5 52 38.5 28.6 0 44.2-13 44.2-29.6 0-51.5-162.7-18.7-162.7-124.3 0-47.8 42.6-86.3 113.9-86.3 69.7 0 111.8 38 115.9 95.1h-69.7c-2.1-22.4-19.8-37.4-48.4-37.4-27 0-41.1 10.9-41.1 27.6 0 52.5 159.6 19.8 161.7 125.3 0 49.4-43.1 86.8-113.3 86.8zM2882.1 720.8c0-45.8-25.5-69.7-63.9-69.7-39 0-64.5 23.9-64.5 69.7v159.1h-72.8V720.8c0-45.8-25.5-69.7-64-69.7-39.5 0-65 23.9-65 69.7v159.1h-72.8v-288h72.8v34.8c18.2-23.9 48.9-39 84.7-39 44.7 0 81.6 19.2 101.4 55.1 18.7-32.8 56.7-55.1 98.8-55.1 69.1 0 118 43.7 118 123.2v169H2882V720.8zM3149.8 884.6c-83.7 0-144.5-58.2-144.5-148.7 0-91 59.3-148.7 144.5-148.7 83.2 0 141.9 56.7 141.9 142.5 0 9.4-.5 18.7-2.1 28.1H3079c3.6 42.6 32.8 66.5 69.1 66.5 31.2 0 48.4-15.6 57.7-34.8h78.5c-15.4 53-63.3 95.1-134.5 95.1zm-70.2-175.7h136.7c-1-38-31.2-61.9-68.6-61.9-34.8 0-62.4 22.3-68.1 61.9zM3444.6 790.5l-52.5 89.4h-78l94.1-144.5-95.2-143.5h82.1l58.8 88.9 53-88.9h78l-94.6 143.5 95.7 144.5h-82.1l-59.3-89.4z"></path></g></svg></a>
+      <a href="https://app.prysmex.com" id="prysmexLogo"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 3401.6 1010.5" xml:space="preserve" class="logo euiIcon euiIcon--medium" color="" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><style>.st0{fill:#2b2e46}</style><g id="Group_1342_6_" transform="translate(-214.688 -161.439)"><g id="Group_1_3_" transform="translate(214.688 161.439)"><path id="Path_1_3_" class="st0" d="M889.1 829.4l54.7 94.6H545.3l-55.5-94.6h399.3z"></path><path id="Path_2_3_" class="st0" d="M432.2 829.4l58.3 94.3L38 924l224.6-389.2 56.6 94.9-113 199.4c-.3.3 226 .3 226 .3z"></path><path id="Path_3_3_" class="st0" d="M291.2 484.7l56.9 98.6L545 231.5l-55.5-90.9-198.3 344.1z"></path><path id="Path_4_3_" d="M516.9 385.9l-56.6 100.6 167.4 294H743L516.9 385.9z" fill="#4a75e7"></path></g><path class="st0" d="M1486.6 587.2c73.8 0 131.5 57.7 131.5 147.7 0 89.9-57.7 149.7-131.5 149.7-45.2 0-77.5-22.4-95.1-45.8v178.3h-72.8V591.9h72.8v41.6c17.1-24.5 50.4-46.3 95.1-46.3zm-19.2 63.9c-39 0-75.9 30.2-75.9 84.7s36.9 84.7 75.9 84.7c39.5 0 76.4-31.2 76.4-85.8s-36.9-83.6-76.4-83.6zM1744 879.9h-72.8v-288h72.8v44.7c18.2-29.6 48.4-48.9 88.4-48.9v76.4h-19.2c-43.2 0-69.1 16.6-69.1 72.3v143.5zM2079.3 591.9h77.5l-178.3 424.2H1901l62.4-143.5L1848 591.9h81.6l74.3 201.2 75.4-201.2zM2306 884.6c-72.3 0-122.7-42.1-125.8-95.7h73.3c2.6 21.8 22.9 38.5 52 38.5 28.6 0 44.2-13 44.2-29.6 0-51.5-162.7-18.7-162.7-124.3 0-47.8 42.6-86.3 113.9-86.3 69.7 0 111.8 38 115.9 95.1h-69.7c-2.1-22.4-19.8-37.4-48.4-37.4-27 0-41.1 10.9-41.1 27.6 0 52.5 159.6 19.8 161.7 125.3 0 49.4-43.1 86.8-113.3 86.8zM2882.1 720.8c0-45.8-25.5-69.7-63.9-69.7-39 0-64.5 23.9-64.5 69.7v159.1h-72.8V720.8c0-45.8-25.5-69.7-64-69.7-39.5 0-65 23.9-65 69.7v159.1h-72.8v-288h72.8v34.8c18.2-23.9 48.9-39 84.7-39 44.7 0 81.6 19.2 101.4 55.1 18.7-32.8 56.7-55.1 98.8-55.1 69.1 0 118 43.7 118 123.2v169H2882V720.8zM3149.8 884.6c-83.7 0-144.5-58.2-144.5-148.7 0-91 59.3-148.7 144.5-148.7 83.2 0 141.9 56.7 141.9 142.5 0 9.4-.5 18.7-2.1 28.1H3079c3.6 42.6 32.8 66.5 69.1 66.5 31.2 0 48.4-15.6 57.7-34.8h78.5c-15.4 53-63.3 95.1-134.5 95.1zm-70.2-175.7h136.7c-1-38-31.2-61.9-68.6-61.9-34.8 0-62.4 22.3-68.1 61.9zM3444.6 790.5l-52.5 89.4h-78l94.1-144.5-95.2-143.5h82.1l58.8 88.9 53-88.9h78l-94.6 143.5 95.7 144.5h-82.1l-59.3-89.4z"></path></g></svg></a>
     </div>
     [#if title?has_content]
       <h2 class="euiTitle euiTitle--large euiFlexItem">${title}</h2>
@@ -1036,8 +1059,8 @@
 <button class="${color} euiButton--fill ${class} euiButton euiButton--primary${disabled?then(' euiButton-isDisabled', '')}"[#if disabled] disabled="disabled"[/#if][#if name !=""]name="${name}"[/#if][#if value !=""]value="${value}"[/#if]><i class="fa fa-${icon}"></i> ${text}</button>
 [/#macro]
 
-[#macro link url extraParameters="" class=""]
-<a class="euiLink euiLink--primary ${class}" href="${url}?tenantId=${(tenantId)!''}&client_id=${(client_id)!''}&nonce=${(nonce?url)!''}&pendingIdPLinkId=${(pendingIdPLinkId)!''}&redirect_uri=${(redirect_uri?url)!''}&response_mode=${(response_mode?url)!''}&response_type=${(response_type?url)!''}&scope=${(scope?url)!''}&state=${(state?url)!''}&timezone=${(timezone?url)!''}&metaData.device.name=${(metaData.device.name?url)!''}&metaData.device.type=${(metaData.device.type?url)!''}${(extraParameters!'')?no_esc}&code_challenge=${(code_challenge?url)!''}&code_challenge_method=${(code_challenge_method?url)!''}&user_code=${(user_code?url)!''}">
+[#macro link url extraParameters="" class="" id=""]
+<a class="euiLink euiLink--primary ${class}" id="${id}" href="${url}?tenantId=${(tenantId)!''}&client_id=${(client_id)!''}&nonce=${(nonce?url)!''}&pendingIdPLinkId=${(pendingIdPLinkId)!''}&redirect_uri=${(redirect_uri?url)!''}&response_mode=${(response_mode?url)!''}&response_type=${(response_type?url)!''}&scope=${(scope?url)!''}&state=${(state?url)!''}&timezone=${(timezone?url)!''}&metaData.device.name=${(metaData.device.name?url)!''}&metaData.device.type=${(metaData.device.type?url)!''}${(extraParameters!'')?no_esc}&code_challenge=${(code_challenge?url)!''}&code_challenge_method=${(code_challenge_method?url)!''}&user_code=${(user_code?url)!''}">
 [#nested/]
 </a>
 [/#macro]

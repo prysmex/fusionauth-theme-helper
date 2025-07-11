@@ -51,7 +51,7 @@
         </fieldset>
         <div class="mt-8">
           [@helpers.button text=theme.message('submit')/]
-          [#--<p class="mt-8">[@helpers.link url="/oauth2/authorize"]${theme.message('return-to-login')}[/@helpers.link]</p>--]
+          <p class="mt-8">[@helpers.link url="/oauth2/authorize"]${theme.message('return-to-login')}[/@helpers.link]</p>
         </div>
       </form>
     [/@helpers.main]
