@@ -10,6 +10,17 @@
   [@helpers.head]
     [@helpers.captchaScripts showCaptcha=showCaptcha captchaMethod=tenant.captchaConfiguration.captchaMethod siteKey=tenant.captchaConfiguration.siteKey/]
     [#-- Custom <head> code goes here --]
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        const emailField = document.querySelector('input[name="email"]');
+        if (emailField !== null) {
+          const identifier = new URL(window.location.href).searchParams.get('login_hint');
+          if (identifier !== null) {
+            emailField.value = identifier;
+          }
+        }
+      });
+    </script>
   [/@helpers.head]
   [@helpers.body]
     [@helpers.header]
