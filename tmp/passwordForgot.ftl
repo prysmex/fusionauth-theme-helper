@@ -43,7 +43,7 @@
           ${theme.message('forgot-password')}
         </p>
         
-        <span id="tenantBadge" class="mt-8"></span>
+        <span id="tenantBadge" style="16px 0px 0px 0px"></span>
 
         <fieldset class="mt-8">
           [@helpers.input type="text" name="email" id="email" autocapitalize="none" autofocus=true autocomplete="on" autocorrect="off" placeholder=theme.message('email') leftAddon="user" required=true/]

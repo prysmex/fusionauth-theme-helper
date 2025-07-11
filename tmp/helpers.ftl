@@ -129,7 +129,7 @@
         if(tenantStr) {
           const tenantBadge = document.getElementById('tenantBadge');
           if (tenantBadge) {
-            tenantBadge.innerHTML = '<span style="margin: 0px 0px 16px 0px;" class="euiBetaBadge euiBetaBadge--hollow">' + tenantStr + '</span>';
+            tenantBadge.innerHTML = '<span class="euiBetaBadge euiBetaBadge--hollow">' + tenantStr + '</span>';
           }
         }
       }

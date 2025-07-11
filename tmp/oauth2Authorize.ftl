@@ -74,7 +74,7 @@
           [@helpers.hidden name="loginId"/]
         [/#if]
 
-          <span id="tenantBadge"></span>
+          <span id="tenantBadge" style="margin: 0px 0px 16px 0px"></span>
         [@helpers.input type="text" name="loginId" id="loginId" autocomplete="username" autocapitalize="none" autocomplete="on" autocorrect="off" spellcheck="false" autofocus=(!loginId?has_content) placeholder=theme.message("loginId") leftAddon="user" disabled=(showPasswordField && hasDomainBasedIdentityProviders)/]
         [#if showPasswordField]
           [@helpers.input type="password" name="password" id="password" autocomplete="current-password" autofocus=loginId?has_content placeholder=theme.message("password") leftAddon="lock"/]
