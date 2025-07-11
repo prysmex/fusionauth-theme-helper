@@ -42,6 +42,9 @@
         <p>
           ${theme.message('forgot-password')}
         </p>
+        
+        <span id="tenantBadge" class="mt-8"></span>
+
         <fieldset class="mt-8">
           [@helpers.input type="text" name="email" id="email" autocapitalize="none" autofocus=true autocomplete="on" autocorrect="off" placeholder=theme.message('email') leftAddon="user" required=true/]
           [@helpers.captchaBadge showCaptcha=showCaptcha captchaMethod=tenant.captchaConfiguration.captchaMethod siteKey=tenant.captchaConfiguration.siteKey/]
