@@ -154,9 +154,37 @@
           prysmexLogo.href = new URL(deserializedState.oauth.redirect_uri).origin;
         } 
       }
+
+      // Trim username fields on form submit.
+      Prime.Document.query('form').each(function(form) {
+        form.addEventListener('submit', function() {
+          var fieldsToTrim = ['loginId', 'user.email', 'registration.email', 'user.username', 'registration.username'];
+          fieldsToTrim.forEach(function(fieldName) {
+            var input = form.queryFirst('input[name="' + fieldName + '"]');
+            if (input !== null) {
+              input.setValue(input.getValue().trim());
+            }
+          });
+        });
+      });
     });
   </script>
 
+  <script>
+    function togglePasswordVisibility(inputId, iconId) {
+      const passwordInput = document.getElementById(inputId);
+      const toggleIcon = document.getElementById(iconId);
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+  </script>
   
   <script>
     "use strict";
@@ -842,27 +870,64 @@
     </div>
   [/#compress]
   [/#if]
+
+  [#assign useGroup = (type == 'password')]
+
+  
   <div class="euiFormRow__fieldWrapper">
-    <div class="euiFormControlLayout--fullWidth euiFormControlLayout">
-      <div class="euiFormControlLayout__childrenWrapper">  
-        [#local value=("((" + name + ")!'')")?eval/]
-        [#if (placeholder?has_content) && (type == "date") && (value == "")]
-          [#-- If the value is empty, we want to show the placeholder. This is a workaround for the date picker. --]
-          [#assign the_type="text" /]
-          [#assign the_class=class + " date-picker" /]
-          [#-- it is possible that this element is the first in the form list. We want it to focus on something else so that the placeholder shows. --]
-          <input type="text" style="display:none" autofocus="autofocus" />
-        [#else ]
-          [#assign the_type=type /]
-          [#assign the_class=class /]
-        [/#if]
-        <input id="${id}" type="${the_type}" name="${name}" [#if type != "password"]value="${value}"[/#if] class="${the_class} euiFieldText--fullWidth euiFieldText" autocapitalize="${autocapitalize}" autocomplete="${autocomplete}" autocorrect="${autocorrect}" spellcheck="${spellcheck}" [#if autofocus]autofocus="autofocus"[/#if] placeholder="${placeholder}" [#if disabled]disabled="disabled"[/#if]/>
-        [#if dateTimeFormat != ""]
-          <input type="hidden" name="${name}@dateTimeFormat" value="${dateTimeFormat}"/>
-        [#elseif type == "date"]
-          <input type="hidden" name="${name}@dateTimeFormat" value="yyyy-MM-dd"/>
-        [/#if]
+    <div class="euiFormControlLayout euiFormControlLayout--fullWidth
+      ${useGroup?then(' euiFormControlLayout--group', '')}
+    ">    
+    <div class="euiFormControlLayout__childrenWrapper">  
+      [#local value=("((" + name + ")!'')")?eval/]
+      [#if (placeholder?has_content) && (type == "date") && (value == "")]
+        [#-- If the value is empty, we want to show the placeholder. This is a workaround for the date picker. --]
+        [#assign the_type="text" /]
+        [#assign the_class=class + " date-picker" /]
+        [#-- it is possible that this element is the first in the form list. We want it to focus on something else so that the placeholder shows. --]
+        <input type="text" style="display:none" autofocus="autofocus" />
+      [#else ]
+        [#assign the_type=type /]
+        [#assign the_class=class /]
+      [/#if]
+        <input id="${id}" type="${the_type}" name="${name}" 
+          [#if type != "password"]value="${value}" class="${the_class} euiFieldText--fullWidth euiFieldText"[/#if]
+          [#if type == "password"]class="${the_class} euiFieldPassword euiFieldPassword--fullWidth euiFieldPassword--inGroup euiFieldPassword--withToggle"[/#if] 
+          autocapitalize="${autocapitalize}" 
+          autocomplete="${autocomplete}" 
+          autocorrect="${autocorrect}" 
+          spellcheck="${spellcheck}" 
+          [#if autofocus]autofocus="autofocus"[/#if] 
+          placeholder="${placeholder}" 
+          [#if disabled]disabled="disabled"[/#if]
+        />
+      [#if type == "password"]
+      <div class="euiFormControlLayoutIcons">
+        <span class="euiFormControlLayoutCustomIcon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="euiFormControlLayoutCustomIcon__icon euiIcon euiIcon--medium" color="" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><path d="M4 5v-.8C4 1.88 5.79 0 8 0s4 1.88 4 4.2V5h1.143c.473 0 .857.448.857 1v9c0 .552-.384 1-.857 1H2.857C2.384 16 2 15.552 2 15V6c0-.552.384-1 .857-1H4zM3 15h10V6H3v9zm5.998-3.706L9.5 12.5h-3l.502-1.206A1.644 1.644 0 016.5 10.1c0-.883.672-1.6 1.5-1.6s1.5.717 1.5 1.6c0 .475-.194.901-.502 1.194zM11 4.36C11 2.504 9.657 1 8 1S5 2.504 5 4.36V5h6v-.64z"></path></svg>
+        </span>
       </div>
+      [/#if]
+      [#if dateTimeFormat != ""]
+        <input type="hidden" name="${name}@dateTimeFormat" value="${dateTimeFormat}"/>
+      [#elseif type == "date"]
+        <input type="hidden" name="${name}@dateTimeFormat" value="yyyy-MM-dd"/>
+      [/#if]
+    </div>
+    [#if useGroup]
+      [#if type == "password"]
+          <button 
+            class="euiButtonIcon euiButtonIcon--empty euiButtonIcon--primary euiButtonIcon--xSmall" 
+            aria-pressed="false" 
+            tabindex="-1" 
+            type="button" 
+            onclick="togglePasswordVisibility('${id}', 'toggle-icon-${id}')" 
+            aria-label="Show or hide password"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="euiButtonIcon__icon euiIcon--inherit euiIcon euiIcon--medium" color="inherit" role="image" aria-hidden="true" aria-label="" aria-labelledby="" tabindex="" style=""><path d="M15.98 7.873c.013.03.02.064.02.098v.06a.24.24 0 01-.02.097C15.952 8.188 13.291 14 8 14S.047 8.188.02 8.128A.24.24 0 010 8.03v-.059c0-.034.007-.068.02-.098C.048 7.813 2.709 2 8 2s7.953 5.813 7.98 5.873zm-1.37-.424a12.097 12.097 0 00-1.385-1.862C11.739 3.956 9.999 3 8 3c-2 0-3.74.956-5.225 2.587a12.098 12.098 0 00-1.701 2.414 12.095 12.095 0 001.7 2.413C4.26 12.043 6.002 13 8 13s3.74-.956 5.225-2.587A12.097 12.097 0 0014.926 8c-.08-.15-.189-.343-.315-.551zM8 4.75A3.253 3.253 0 0111.25 8 3.254 3.254 0 018 11.25 3.253 3.253 0 014.75 8 3.252 3.252 0 018 4.75zm0 1C6.76 5.75 5.75 6.76 5.75 8S6.76 10.25 8 10.25 10.25 9.24 10.25 8 9.24 5.75 8 5.75zm0 1.5a.75.75 0 100 1.5.75.75 0 000-1.5z"></path></svg>
+          </button>
+      [/#if]
+    [/#if]
     </div>
  </div>
 [/#macro]
