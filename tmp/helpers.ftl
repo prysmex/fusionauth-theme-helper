@@ -775,20 +775,29 @@
   [/#if]
 [/#macro]
 
-[#macro alert message type icon includeDismissButton=true rowClass="row center-xs" colClass="col-xs col-sm-8 col-md-6 col-lg-5 col-xl-4"]
-<div class="${rowClass}">
-  <div class="${colClass}">
-    <div class="alert ${type}">
-      <i class="fa fa-${icon}"></i>
-      <p>
-        ${message}
-      </p>
-      [#if includeDismissButton]
-        <a href="#" class="dismiss-button"><i class="fa fa-times-circle"></i></a>
-      [/#if]
+[#macro alert message type icon includeDismissButton=true rowClass="" colClass="col-xs col-sm-8 col-md-6 col-lg-5 col-xl-4"]
+  [#if type == "info"]
+    [#local calloutType = "primary" /]
+  [#elseif type == "error"]
+    [#local calloutType = "danger" /]
+  [#else]
+    [#local calloutType = "primary" /]
+  [/#if]
+  <div class="${rowClass}" style="margin: 8px 0px 20px 0px;">
+    <div class="alert ${colClass} euiCallOut euiCallOut--small euiCallOut--${calloutType}">
+      <div class="euiCallOutHeader euiFlexGroup euiFlexGroup--alignItemsCenter">
+        <span class="euiCallOutHeader__title euiFlexItem">
+          ${message}
+        </span>
+        [#if includeDismissButton]
+          <a href="#" class="euiButtonIcon euiButtonIcon--${calloutType} euiCallOut__closeButton dismiss-button">
+            <i class="fa fa-times-circle"></i>
+          </a>
+        [/#if]
+      </div>
+      
     </div>
   </div>
-</div>
 [/#macro]
 
 [#-- Below are the input helpers for hidden, text, buttons, labels and form errors.
