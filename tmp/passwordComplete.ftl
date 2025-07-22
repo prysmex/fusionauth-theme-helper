@@ -16,9 +16,16 @@
           let deserializedState = JSON.parse(atob(state || '{}'));
           if(deserializedState && deserializedState.oauth && deserializedState.oauth.redirect_uri) {
             setTimeout(function() {
-              const returnToApp = new URL(deserializedState.oauth.redirect_uri);
-              // We want to return to the base URL of the application
-              window.location.href = returnToApp.origin;
+              let redirectUrl = deserializedState.oauth.redirect_uri;
+              let returnToApp;
+              try {
+                returnToApp = new URL(redirectUrl);
+                // If origin is 'null' (e.g., for custom schemes), fallback to the full URL
+                window.location.href = returnToApp.origin !== 'null' ? returnToApp.origin : redirectUrl;
+              } catch (e) {
+                // If URL constructor fails (e.g., custom scheme), fallback to the full URL
+                window.location.href = redirectUrl;
+              }
             }, 3000);
           } 
          }
