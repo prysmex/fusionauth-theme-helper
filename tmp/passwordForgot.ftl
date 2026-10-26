@@ -39,6 +39,7 @@
         [@helpers.hidden name="tenantId"/]
         [@helpers.hidden name="client_id"/]
         [@helpers.hidden name="state"/]
+        [@helpers.hidden name="locale" value=((locale?string)!'')/]
         <p>
           ${theme.message('forgot-password')}
         </p>

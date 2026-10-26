@@ -55,7 +55,7 @@
           [#if step == totalSteps]
             [@helpers.button icon="key" text=theme.message("register")/]
           [#else]
-            [@helpers.button icon="arrow-right" text="Next"/]
+            [@helpers.button icon="arrow-right" text=theme.message("next")/]
           [/#if]
           </div>
         [#-- End Custom Self Service Registration Form Steps --]

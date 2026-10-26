@@ -42,6 +42,31 @@
         [#-- This object handles guessing the timezone, filling in the device id of the user, and check for WebAuthn re-authentication support --]
         new FusionAuth.OAuth2.Authorize();
       });
+
+      [#-- "Change" goes back to the email step. It can't pass login_hint (FusionAuth would run the domain check again and
+           skip straight back to the password step), so carry the email over in sessionStorage to prefill the field. --]
+      document.addEventListener('DOMContentLoaded', function() {
+        var changeLink = document.getElementById('changeLoginId');
+        if (changeLink) {
+          changeLink.addEventListener('click', function() {
+            try { window.sessionStorage.setItem('changeLoginId', '${((loginId)!'')?js_string}'); } catch (e) {}
+          });
+          return;
+        }
+
+        var previousLoginId = null;
+        try {
+          previousLoginId = window.sessionStorage.getItem('changeLoginId');
+          window.sessionStorage.removeItem('changeLoginId');
+        } catch (e) {}
+
+        var loginIdInput = document.querySelector('input[name="loginId"]:not([type="hidden"])');
+        if (previousLoginId && loginIdInput && !loginIdInput.value) {
+          loginIdInput.value = previousLoginId;
+          loginIdInput.focus();
+          loginIdInput.select();
+        }
+      });
     </script>
   [/@helpers.head]
   [@helpers.body]
@@ -70,12 +95,21 @@
         [@helpers.oauthHiddenFields/]
         [@helpers.hidden name="showPasswordField"/]
         [@helpers.hidden name="userVerifyingPlatformAuthenticatorAvailable"/]
-        [#if showPasswordField && hasDomainBasedIdentityProviders]
-          [@helpers.hidden name="loginId"/]
-        [/#if]
 
           <span id="tenantBadge"></span>
-        [@helpers.input type="text" name="loginId" id="loginId" autocomplete="username" autocapitalize="none" autocomplete="on" autocorrect="off" spellcheck="false" autofocus=(!loginId?has_content) placeholder=theme.message("loginId") leftAddon="user" disabled=(showPasswordField && hasDomainBasedIdentityProviders)/]
+        [#-- Identifier-first: the email already decided the route (password vs. SSO), so show it read-only with a way back. --]
+        [#if showPasswordField && hasDomainBasedIdentityProviders]
+          [@helpers.hidden name="loginId"/]
+          <div class="euiFormRow euiFormRow--fullWidth">
+            <div class="loginIdChip">
+              <i class="fa fa-user loginIdChip__icon"></i>
+              <span class="loginIdChip__value" title="${(loginId)!''}">${(loginId)!''}</span>
+              [@helpers.link url="" class="loginIdChip__change" id="changeLoginId" extraParameters="&showPasswordField=false"]${theme.message("change-login-id")}[/@helpers.link]
+            </div>
+          </div>
+        [#else]
+          [@helpers.input type="text" name="loginId" id="loginId" autocomplete="username" autocapitalize="none" autocomplete="on" autocorrect="off" spellcheck="false" autofocus=(!loginId?has_content) placeholder=theme.message("loginId") leftAddon="user"/]
+        [/#if]
         [#if showPasswordField]
           [@helpers.input type="password" name="password" id="password" autocomplete="current-password" autofocus=loginId?has_content placeholder=theme.message("password") leftAddon="lock"/]
           [@helpers.captchaBadge showCaptcha=showCaptcha captchaMethod=tenant.captchaConfiguration.captchaMethod siteKey=tenant.captchaConfiguration.siteKey/]
@@ -88,7 +122,7 @@
           <div class="mt-8 euiFlexGroup euiFlexGroup--directionRow euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter">
             [#if showPasswordField]
               <div class="euiFlexItem euiFlexItem--flexGrowZero">
-                [@helpers.button icon="key" text=theme.message("submit")/]
+                [@helpers.button icon="key" text=theme.message("login-submit")/]
               </div>
               <div class="euiFlexItem euiFlexItem--flexGrowZero">
                 [#if login_hint??]
@@ -108,11 +142,6 @@
             [/#if]
           </div>
       </form>
-        [#if showPasswordField && hasDomainBasedIdentityProviders]
-          <div>
-            [@helpers.link url="" extraParameters="&showPasswordField=false"]${theme.message("sign-in-as-different-user")}[/@helpers.link]
-          </div>
-        [/#if]
       [#if application.registrationConfiguration.enabled]
         <div class="mt-8">
           ${theme.message("dont-have-an-account")}
